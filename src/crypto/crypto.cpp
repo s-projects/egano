@@ -405,6 +405,9 @@ namespace Crypto {
       return false;
     }
     ge_dsm_precomp(image_pre, &image_unp);
+    if (ge_check_subgroup_precomp_vartime(image_pre) != 0) {
+      return false;
+    }
     sc_0(reinterpret_cast<unsigned char*>(&sum));
     buf->h = prefix_hash;
     for (i = 0; i < pubs_count; i++) {

@@ -10,7 +10,7 @@ using namespace Crypto;
 namespace CryptoNote {
 
 TransfersSubscription::TransfersSubscription(const CryptoNote::Currency& currency, const AccountSubscription& sub)
-  : subscription(sub), transfers(currency, sub.transactionSpendableAge) {}
+  : subscription(sub), transfers(currency, sub.transactionSpendableAge), m_address(currency.accountAddressAsString(sub.keys.address)) {}
 
 
 SynchronizationStart TransfersSubscription::getSyncStart() {

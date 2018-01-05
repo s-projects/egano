@@ -32,6 +32,7 @@ public:
 private:
   TransfersContainer transfers;
   AccountSubscription subscription;
+  std::string m_address;
 };
 
 }
