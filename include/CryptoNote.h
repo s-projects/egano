@@ -1,6 +1,19 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, The Egano developers
+//
+// This file is part of Egano.
+//
+// Egano is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Egano is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Egano.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -20,24 +33,13 @@ struct KeyInput {
   Crypto::KeyImage keyImage;
 };
 
-struct MultisignatureInput {
-  uint64_t amount;
-  uint8_t signatureCount;
-  uint32_t outputIndex;
-};
-
 struct KeyOutput {
   Crypto::PublicKey key;
 };
 
-struct MultisignatureOutput {
-  std::vector<Crypto::PublicKey> keys;
-  uint8_t requiredSignatureCount;
-};
+typedef boost::variant<BaseInput, KeyInput> TransactionInput;
 
-typedef boost::variant<BaseInput, KeyInput, MultisignatureInput> TransactionInput;
-
-typedef boost::variant<KeyOutput, MultisignatureOutput> TransactionOutputTarget;
+typedef boost::variant<KeyOutput> TransactionOutputTarget;
 
 struct TransactionOutput {
   uint64_t amount;
@@ -56,6 +58,19 @@ struct Transaction : public TransactionPrefix {
   std::vector<std::vector<Crypto::Signature>> signatures;
 };
 
+struct BaseTransaction : public TransactionPrefix {
+};
+
+struct ParentBlock {
+  uint8_t majorVersion;
+  uint8_t minorVersion;
+  Crypto::Hash previousBlockHash;
+  uint16_t transactionCount;
+  std::vector<Crypto::Hash> baseTransactionBranch;
+  BaseTransaction baseTransaction;
+  std::vector<Crypto::Hash> blockchainBranch;
+};
+
 struct BlockHeader {
   uint8_t majorVersion;
   uint8_t minorVersion;
@@ -64,7 +79,8 @@ struct BlockHeader {
   Crypto::Hash previousBlockHash;
 };
 
-struct Block : public BlockHeader {
+struct BlockTemplate : public BlockHeader {
+  ParentBlock parentBlock;
   Transaction baseTransaction;
   std::vector<Crypto::Hash> transactionHashes;
 };
@@ -86,5 +102,10 @@ struct KeyPair {
 };
 
 using BinaryArray = std::vector<uint8_t>;
+
+struct RawBlock {
+  BinaryArray block; //BlockTemplate
+  std::vector<BinaryArray> transactions;
+};
 
 }

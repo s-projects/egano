@@ -1,3 +1,17 @@
+Release notes 1.2.0
+
+- Blockchain storage changed to RocksDB
+- Completely revamped CryptoNote core
+- Security algorithm enhancement (BCN infinite coin issue)
+- Added more seed nodes
+- Daemon synchronization improvements
+- Wallet synchronization enhancements
+- RPC Wallet log optimization
+- RPC Wallet API improvements
+- Transaction pool issue fixes
+- Daemon stability improvements
+- Various other improvements from Bytecoin
+
 Release notes 1.1.1
 
 - New API for CryptoNote RPC Wallet
@@ -98,4 +112,4 @@ Release notes 0.8.2
 
 Release notes 0.8.1
 
-Bytecoin project is moved to GitHub
+CryptoNote project is moved to GitHub

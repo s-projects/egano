@@ -1,16 +1,30 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, The Egano developers
+//
+// This file is part of Egano.
+//
+// Egano is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Egano is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Egano.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
-#include <initializer_list>
+#include <limits>
 
 namespace CryptoNote {
 namespace parameters {
 
-const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
+const uint32_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
 const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
 const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
 //TODO Currency-specific address prefix
@@ -31,6 +45,9 @@ static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED
 //TODO Define number of blocks for block size median calculation
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 100;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 10000; //size of block (bytes) after which reward for block calculated using block size
+const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2  = 20000;
+const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1  = 10000;
+const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
 const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 //TODO Define number of digits
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 18;
@@ -59,29 +76,39 @@ const uint64_t CRYPTONOTE_MEMPOOL_TX_LIVETIME                = 60 * 60 * 24;    
 const uint64_t CRYPTONOTE_MEMPOOL_TX_FROM_ALT_BLOCK_LIVETIME = 60 * 60 * 24 * 7; //seconds, one week
 const uint64_t CRYPTONOTE_NUMBER_OF_PERIODS_TO_FORGET_TX_DELETED_FROM_POOL = 7;  // CRYPTONOTE_NUMBER_OF_PERIODS_TO_FORGET_TX_DELETED_FROM_POOL * CRYPTONOTE_MEMPOOL_TX_LIVETIME = time to forget tx
 
-const size_t   FUSION_TX_MAX_SIZE                            = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE * 30 / 100;
+const size_t   FUSION_TX_MAX_SIZE                            = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT * 30 / 100;
 const size_t   FUSION_TX_MIN_INPUT_COUNT                     = 12;
 const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 
-const char     CRYPTONOTE_BLOCKS_FILENAME[]                  = "blocks.dat";
-const char     CRYPTONOTE_BLOCKINDEXES_FILENAME[]            = "blockindexes.dat";
-const char     CRYPTONOTE_BLOCKSCACHE_FILENAME[]             = "blockscache.dat";
+const uint32_t KEY_IMAGE_CHECKING_BLOCK_INDEX                = 1;
+const uint32_t UPGRADE_HEIGHT_V2                             = std::numeric_limits<uint32_t>::max();
+const uint32_t UPGRADE_HEIGHT_V3                             = std::numeric_limits<uint32_t>::max();
+const unsigned UPGRADE_VOTING_THRESHOLD                      = 90;               // percent
+const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
+const uint32_t UPGRADE_WINDOW                                = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
+static_assert(0 < UPGRADE_VOTING_THRESHOLD && UPGRADE_VOTING_THRESHOLD <= 100, "Bad UPGRADE_VOTING_THRESHOLD");
+static_assert(UPGRADE_VOTING_WINDOW > 1, "Bad UPGRADE_VOTING_WINDOW");
+
+const char     CRYPTONOTE_BLOCKS_FILENAME[]                  = "blocks.bin";
+const char     CRYPTONOTE_BLOCKINDEXES_FILENAME[]            = "blockindexes.bin";
 const char     CRYPTONOTE_POOLDATA_FILENAME[]                = "poolstate.bin";
 const char     P2P_NET_DATA_FILENAME[]                       = "p2pstate.bin";
-const char     CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME[]      = "blockchainindices.dat";
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
-
+const char     GENESIS_COINBASE_TX_HEX[]                     = "013c01ff0001bbbad6adf00d029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121019636320e595b95dfdc1fdcadbe7c4b59c014d26866ff5a545bf83c512d4fe3d2";
 //TODO Put here the name of your currency
 const char     CRYPTONOTE_NAME[]                             = "egano";
-const char     GENESIS_COINBASE_TX_HEX[]                     = "013c01ff0001bbbad6adf00d029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121019636320e595b95dfdc1fdcadbe7c4b59c014d26866ff5a545bf83c512d4fe3d2";
-
-const uint8_t  CURRENT_TRANSACTION_VERSION                   =  1;
+const uint8_t  TRANSACTION_VERSION_1                         =  1;
+const uint8_t  TRANSACTION_VERSION_2                         =  2;
+const uint8_t  CURRENT_TRANSACTION_VERSION                   =  TRANSACTION_VERSION_1;
 const uint8_t  BLOCK_MAJOR_VERSION_1                         =  1;
+const uint8_t  BLOCK_MAJOR_VERSION_2                         =  2;
+const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
+const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 
 const size_t   BLOCKS_IDS_SYNCHRONIZING_DEFAULT_COUNT        =  10000;  //by default, blocks ids count in synchronizing
-const size_t   BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  200;    //by default, blocks count in blocks downloading
+const size_t   BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  100;    //by default, blocks count in blocks downloading
 const size_t   COMMAND_RPC_GET_BLOCKS_FAST_MAX_COUNT         =  1000;
 
 //TODO This port will be used by the daemon to establish connections with p2p network
@@ -92,7 +119,7 @@ const int      RPC_DEFAULT_PORT                              = 47867;
 const size_t   P2P_LOCAL_WHITE_PEERLIST_LIMIT                =  1000;
 const size_t   P2P_LOCAL_GRAY_PEERLIST_LIMIT                 =  5000;
 
-const size_t   P2P_CONNECTION_MAX_WRITE_BUFFER_SIZE          = 16 * 1024 * 1024; // 16 MB
+const size_t   P2P_CONNECTION_MAX_WRITE_BUFFER_SIZE          = 32 * 1024 * 1024; // 32 MB
 const uint32_t P2P_DEFAULT_CONNECTIONS_COUNT                 = 8;
 const size_t   P2P_DEFAULT_WHITELIST_CONNECTIONS_PERCENT     = 70;
 const uint32_t P2P_DEFAULT_HANDSHAKE_INTERVAL                = 60;            // seconds
@@ -104,25 +131,29 @@ const uint64_t P2P_DEFAULT_INVOKE_TIMEOUT                    = 60 * 2 * 1000; //
 const size_t   P2P_DEFAULT_HANDSHAKE_INVOKE_TIMEOUT          = 5000;          // 5 seconds
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "8f80f9a5a434a9f1510d13336228debfee9c918ce505efe225d8c94d045fa115";
 
-//TODO Add here your network seed nodes
-const std::initializer_list<const char*> SEED_NODES = {
-  "91.217.83.120:47767",
-  //"your_seed_ip2.com:8080",
+const char* const SEED_NODES[] = {
+ "seed1.egano.net:47767",
+ "seed2.egano.net:47767",
+ "seed3.egano.net:47767",
+ "68.66.243.200:47767",
+ "80.211.216.207:47767",
+ "185.8.165.10:47767",
+ "173.212.208.173:47767",
+ "91.217.83.120:47767",
+ "163.172.37.154:47767",
+ "84.209.29.62:47767",
+ "185.34.216.108:47767"
+
 };
 
 struct CheckpointData {
-  uint32_t height;
+  uint32_t index;
   const char* blockId;
 };
 
-#ifdef __GNUC__
-__attribute__((unused))
-#endif
-
-// You may add here other checkpoints using the following format:
-// {<block height>, "<block hash>"},
-const std::initializer_list<CheckpointData> CHECKPOINTS = {
-  //{ 10000, "84b6345731e2702cdaadc6ce5e5238c4ca5ecf48e3447136b2ed829b8a95f3ad" },
+const CheckpointData CHECKPOINTS[] = {
+  {0,  "fae0f5e10ea028ac09359af74c69ba19a110bb9d2696b8266af268d1834e9e04"},
+  {25000, "6546f61e918eb34d6a5c38957cde6404b83eefd5fcf703310ab4ddee4bb5236b"}
 };
 } // CryptoNote
 

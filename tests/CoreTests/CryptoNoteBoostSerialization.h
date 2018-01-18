@@ -1,6 +1,19 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, The Egano developers
+//
+// This file is part of Egano.
+//
+// Egano is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Egano is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Egano.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -53,17 +66,6 @@ namespace boost
   {
     a & reinterpret_cast<char (&)[sizeof(Crypto::Hash)]>(x);
   }
-  
-  template <class Archive> void serialize(Archive& archive, CryptoNote::MultisignatureInput &output, unsigned int version) {
-    archive & output.amount;
-    archive & output.signatureCount;
-    archive & output.outputIndex;
-  }
-
-  template <class Archive> void serialize(Archive& archive, CryptoNote::MultisignatureOutput &output, unsigned int version) {
-    archive & output.keys;
-    archive & output.requiredSignatureCount;
-  }
 
   template <class Archive>
   inline void serialize(Archive &a, CryptoNote::KeyOutput &x, const boost::serialization::version_type ver)
@@ -106,8 +108,9 @@ namespace boost
 
 
   template <class Archive>
-  inline void serialize(Archive &a, CryptoNote::Block &b, const boost::serialization::version_type ver)
+  inline void serialize(Archive &a, CryptoNote::BlockTemplate &b, const boost::serialization::version_type ver)
   {
+    std::cout << "boooooooooooost serialize" << std::endl;
     a & b.majorVersion;
     a & b.minorVersion;
     a & b.timestamp;

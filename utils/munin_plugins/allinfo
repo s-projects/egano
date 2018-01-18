@@ -1,0 +1,2 @@
+../../build/release/src/connectivity_tool --ip=127.0.0.1 --rpc_port=47867 --timeout=1000 --rpc_get_daemon_info
+
