@@ -107,7 +107,7 @@ const uint8_t  BLOCK_MAJOR_VERSION_3                         =  3;
 const uint8_t  BLOCK_MINOR_VERSION_0                         =  0;
 const uint8_t  BLOCK_MINOR_VERSION_1                         =  1;
 
-const size_t   BLOCKS_IDS_SYNCHRONIZING_DEFAULT_COUNT        =  10000;  //by default, blocks ids count in synchronizing
+const size_t   BLOCKS_IDS_SYNCHRONIZING_DEFAULT_COUNT        =  1000;  //by default, blocks ids count in synchronizing
 const size_t   BLOCKS_SYNCHRONIZING_DEFAULT_COUNT            =  100;    //by default, blocks count in blocks downloading
 const size_t   COMMAND_RPC_GET_BLOCKS_FAST_MAX_COUNT         =  1000;
 
@@ -135,13 +135,11 @@ const char* const SEED_NODES[] = {
  "seed1.egano.net:47767",
  "seed2.egano.net:47767",
  "seed3.egano.net:47767",
- "68.66.243.200:47767",
- "80.211.216.207:47767",
- "185.8.165.10:47767",
+ "seed4.egano.net:47767",
+ "seed5.egano.net:47767",
+ "seed6.egano.net:47767",
  "173.212.208.173:47767",
  "91.217.83.120:47767",
- "163.172.37.154:47767",
- "84.209.29.62:47767",
  "185.34.216.108:47767"
 
 };
@@ -155,7 +153,7 @@ const CheckpointData CHECKPOINTS[] = {
   {0,  "fae0f5e10ea028ac09359af74c69ba19a110bb9d2696b8266af268d1834e9e04"},
   {25000, "6546f61e918eb34d6a5c38957cde6404b83eefd5fcf703310ab4ddee4bb5236b"},
   {30000, "b15329b32d324ff8df27b1fba02853f63b0af44c341eb1968578d8df0ccdb5c7"},
-  {34000, "9b830d3f7f37c240705d268b3ac498357f268685e4d273344e29992843eb1a4c"}
+  {80000, "7fba2c74ca8f4ae05af8e4f313878ed0e5ca012e3ac552eabe67259c9cf3a432"}
 };
 } // CryptoNote
 
