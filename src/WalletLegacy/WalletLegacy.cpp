@@ -202,7 +202,7 @@ void WalletLegacy::initSync() {
   sub.keys = reinterpret_cast<const AccountKeys&>(m_account.getAccountKeys());
   sub.transactionSpendableAge = 1;
   sub.syncStart.height = 0;
-  sub.syncStart.timestamp = m_account.get_createtime() - ACCOUN_CREATE_TIME_ACCURACY;
+  sub.syncStart.timestamp = 0; //m_account.get_createtime() - ACCOUN_CREATE_TIME_ACCURACY;
   
   auto& subObject = m_transfersSync.addSubscription(sub);
   m_transferDetails = &subObject.getContainer();
